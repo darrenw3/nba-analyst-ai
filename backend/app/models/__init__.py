@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Date
 from app.database import Base
 
 class Player(Base):
@@ -6,7 +6,7 @@ class Player(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
-    age = Column(Integer)
+    birthdate = Column(Date)
     team = Column(String)
     position = Column(String)
     height_inches = Column(Integer)
