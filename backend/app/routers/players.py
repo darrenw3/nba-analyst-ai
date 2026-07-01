@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app import models
-from app.schemas import PlayerCreate, PlayerResponse
+from app.schemas import PlayerCreate, PlayerResponse, SeasonStatsResponse
 from typing import List
 
 router = APIRouter()
@@ -33,3 +33,12 @@ def search_players(name: str, db: Session = Depends(get_db)):
     if not players:
         raise HTTPException(status_code=404, detail="No players found")
     return players
+
+@router.get("/players/{player_id}/stats", response_model=List[SeasonStatsResponse])
+def get_player_stats(player_id: int, db: Session = Depends(get_db)):
+    stats = db.query(models.SeasonStats).filter(
+        models.SeasonStats.player_id == player_id
+    ).order_by(models.SeasonStats.season).all()
+    if stats is None:
+        raise HTTPException(status_code=404, detail="No stats found for this player")
+    return stats

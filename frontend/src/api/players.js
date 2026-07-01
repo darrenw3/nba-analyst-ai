@@ -20,3 +20,8 @@ export const getAllPlayers = async () => {
     const response = await api.get('/players')
     return response.data
 }
+
+export const getPlayerStats = async (playerId) => {
+    const response = await api.get(`/players/${playerId}/stats`)
+    return response.data
+}
